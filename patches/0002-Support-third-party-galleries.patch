@@ -1,0 +1,30 @@
+From 9626830dd8168a43c1aec2c31d6e0810d9050c1d Mon Sep 17 00:00:00 2001
+From: Arian <arian.kulmer@web.de>
+Date: Fri, 8 Mar 2024 02:11:53 +0100
+Subject: [PATCH] Support third party galleries
+
+Signed-off-by: Tashfin Shakeer Rhythm <tashfinshakeerrhythm@gmail.com>
+[genie1997: re-made for the 6.4 GalleryHelper intent builder]
+Signed-off-by: genie1997 <genie1997.dev@gmail.com>
+---
+ smali/A/c3.smali | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/smali/A/c3.smali b/smali/A/c3.smali
+index d00a217b..457d12c1 100644
+--- a/smali/A/c3.smali
++++ b/smali/A/c3.smali
+@@ -138,10 +138,6 @@
+     invoke-direct {v1, v5, p2}, Landroid/content/Intent;-><init>(Ljava/lang/String;Landroid/net/Uri;)V
+ 
+     :goto_0
+-    const-string p2, "com.miui.gallery"
+-
+-    invoke-virtual {v1, p2}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+-
+     const-string p2, "from_MiuiCamera"
+ 
+     invoke-virtual {v1, p2, v2}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Z)Landroid/content/Intent;
+-- 
+2.53.0
+
