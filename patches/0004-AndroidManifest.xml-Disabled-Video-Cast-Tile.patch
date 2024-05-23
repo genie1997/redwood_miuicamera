@@ -1,0 +1,28 @@
+From d1d7d82f8b3fa8475c018c53d94a34eb73d036b1 Mon Sep 17 00:00:00 2001
+From: Fuutao <fuutaoao@gmail.com>
+Date: Thu, 23 May 2024 19:29:29 +0800
+Subject: [PATCH] AndroidManifest.xml: Disabled Video Cast Tile
+
+Signed-off-by: Fuutao <fuutaoao@gmail.com>
+[genie1997: re-made for the 6.4 manifest]
+Signed-off-by: genie1997 <genie1997.dev@gmail.com>
+---
+ AndroidManifest.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 92009bc6..2c598306 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -328,7 +328,7 @@
+         <provider android:authorities="com.android.camera.distribution" android:exported="true" android:name="com.xiaomi.camera.distribution.DistributionProvider" android:permission="com.android.camera.permission.DISTRIBUTION">
+             <meta-data android:name="com.android.camera.provider.distributor.WatermarkDistributor" android:value="xiaomi.distribution"/>
+         </provider>
+-        <service android:enabled="true" android:exported="true" android:icon="@drawable/ic_remote_camera_control_mm" android:label="@string/h1p" android:name="com.xiaomi.camera.videocast.VideoCastTileService" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
++        <service android:enabled="false" android:exported="false" android:icon="@drawable/ic_remote_camera_control_mm" android:label="@string/h1p" android:name="com.xiaomi.camera.videocast.VideoCastTileService" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+             <meta-data android:name="com.android.device.restriction" android:value="star;mars;odin;thor"/>
+         </service>
+         <uses-native-library android:name="libSNPE.so" android:required="false"/>
+-- 
+2.53.0
+
