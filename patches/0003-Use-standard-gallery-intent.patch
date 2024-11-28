@@ -1,0 +1,38 @@
+From 3aadfe25e3a99320a3c7bebc01af9f6c942de540 Mon Sep 17 00:00:00 2001
+From: Arian <arian.kulmer@web.de>
+Date: Thu, 28 Nov 2024 20:05:39 +0530
+Subject: [PATCH] Use standard gallery intent
+
+*Change com.android.camera.action.REVIEW to android.provider.action.REVIEW
+
+[genie1997: re-made for the 6.4 GalleryHelper intent builder]
+Signed-off-by: genie1997 <genie1997.dev@gmail.com>
+---
+ smali/A/c3.smali | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/smali/A/c3.smali b/smali/A/c3.smali
+index 457d12c1..b712d78b 100644
+--- a/smali/A/c3.smali
++++ b/smali/A/c3.smali
+@@ -85,7 +85,7 @@
+ 
+     const/4 v4, 0x0
+ 
+-    const-string v5, "com.android.camera.action.REVIEW"
++    const-string v5, "android.provider.action.REVIEW"
+ 
+     if-eqz v1, :cond_0
+ 
+@@ -129,7 +129,7 @@
+     :cond_1
+     new-array v1, v4, [Ljava/lang/Object;
+ 
+-    const-string v6, "gotoGallery: com.android.camera.action.REVIEW"
++    const-string v6, "gotoGallery: android.provider.action.REVIEW"
+ 
+     invoke-static {v3, v6, v1}, Lcom/android/camera/log/Log;->d(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V
+ 
+-- 
+2.53.0
+
