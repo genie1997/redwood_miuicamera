@@ -1,0 +1,28 @@
+From 4156a7a52d83926a65305807a72d10ff887bfe2c Mon Sep 17 00:00:00 2001
+From: AdarshGrewal <adarshgrewal@gmail.com>
+Date: Wed, 3 Jun 2026 14:00:15 +0530
+Subject: [PATCH] Remove Leica permissions limited popup
+
+[genie1997: re-made for the houji 6.4 build]
+Signed-off-by: genie1997 <genie1997.dev@gmail.com>
+---
+ smali/com/android/camera/ActivityBase$c.smali | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/smali/com/android/camera/ActivityBase$c.smali b/smali/com/android/camera/ActivityBase$c.smali
+index 3b6f75c7..1bbc027f 100644
+--- a/smali/com/android/camera/ActivityBase$c.smali
++++ b/smali/com/android/camera/ActivityBase$c.smali
+@@ -79,9 +79,6 @@
+     goto/16 :goto_1
+ 
+     :pswitch_1
+-    const p1, 0x7f140af8
+-
+-    invoke-static {p0, p1, v6}, LA/g4;->c(Landroid/content/Context;IZ)V
+ 
+     goto/16 :goto_1
+ 
+-- 
+2.53.0
+
