@@ -1,0 +1,49 @@
+From a050eb9883e5df97332806726da5716df6f75f70 Mon Sep 17 00:00:00 2001
+From: Ashwin Devi Srinivasan <ashwin@ashds.dev>
+Date: Thu, 22 Oct 2026 11:36:38 +0400
+Subject: [PATCH] Encode slow motion at the normal frame rate
+
+Mojito records slow motion as a real-time high frame rate file and leaves
+the slowdown to MIUI Gallery, so other players show it at normal speed.
+Keep the profile frame rate and only raise the capture rate, as the app
+already does on devices that encode the slowdown. That file has no
+usable audio track and does not need every frame to be a key frame.
+
+[genie1997: re-made for 6.4 without the key frame change]
+Signed-off-by: genie1997 <genie1997.dev@gmail.com>
+---
+ smali_classes2/com/android/camera/module/video/v.smali | 4 +---
+ smali_classes2/com/android/camera/module/video/z.smali | 2 +-
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/smali_classes2/com/android/camera/module/video/v.smali b/smali_classes2/com/android/camera/module/video/v.smali
+index 15477958..f86da74a 100644
+--- a/smali_classes2/com/android/camera/module/video/v.smali
++++ b/smali_classes2/com/android/camera/module/video/v.smali
+@@ -2967,9 +2967,7 @@
+ 
+     if-nez v3, :cond_22
+ 
+-    const/16 v3, 0xac
+-
+-    if-ne v3, v1, :cond_21
++    goto :cond_21
+ 
+     sget-object v3, LG7/b$b;->a:LG7/b;
+ 
+diff --git a/smali_classes2/com/android/camera/module/video/z.smali b/smali_classes2/com/android/camera/module/video/z.smali
+index 7e702b63..6b2e3795 100644
+--- a/smali_classes2/com/android/camera/module/video/z.smali
++++ b/smali_classes2/com/android/camera/module/video/z.smali
+@@ -2239,7 +2239,7 @@
+ 
+     if-nez p0, :cond_1
+ 
+-    if-eqz v0, :cond_0
++    goto :cond_0
+ 
+     goto :goto_0
+ 
+-- 
+2.53.0
+
