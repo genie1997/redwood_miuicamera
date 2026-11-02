@@ -1,0 +1,45 @@
+From e5cce944dd1cf6585eba9700b51c9b97c1967b3f Mon Sep 17 00:00:00 2001
+From: genie1997 <genie1997.dev@gmail.com>
+Date: Mon, 2 Nov 2026 17:58:06 +0530
+Subject: [PATCH] redwood: Enable Leica styles
+
+Offer the Leica looks and the Leica watermark on redwood.
+---
+ smali_classes7/com/mi/device/Redwood.smali | 24 ++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/smali_classes7/com/mi/device/Redwood.smali b/smali_classes7/com/mi/device/Redwood.smali
+index 2dccd291..f66eea80 100644
+--- a/smali_classes7/com/mi/device/Redwood.smali
++++ b/smali_classes7/com/mi/device/Redwood.smali
+@@ -2096,3 +2096,27 @@
+ 
+     return v0
+ .end method
++
++.method public P3()Z
++    .locals 1
++
++    const/4 v0, 0x1
++
++    return v0
++.end method
++
++.method public Q3()Z
++    .locals 1
++
++    const/4 v0, 0x1
++
++    return v0
++.end method
++
++.method public v2()Z
++    .locals 1
++
++    const/4 v0, 0x1
++
++    return v0
++.end method
+-- 
+2.53.0
+
