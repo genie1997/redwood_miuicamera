@@ -1,0 +1,27 @@
+From 91748a3dcdf6706a24d781c085e27638e4d9ffd1 Mon Sep 17 00:00:00 2001
+From: genie1997 <genie1997.dev@gmail.com>
+Date: Mon, 2 Nov 2026 23:11:49 +0530
+Subject: [PATCH] Prefer the main activity for secure camera launches
+
+AssistantCamera also handles the secure camera intent, so the
+lockscreen launch showed a chooser.
+---
+ AndroidManifest.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 2c598306..750566cf 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -163,7 +163,7 @@
+                 <action android:name="com.android.camera.action.IDPHOTO"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+             </intent-filter>
+-            <intent-filter>
++            <intent-filter android:priority="1">
+                 <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE"/>
+                 <category android:name="android.intent.category.DEFAULT"/>
+             </intent-filter>
+-- 
+2.53.0
+
