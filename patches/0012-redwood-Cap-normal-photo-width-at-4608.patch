@@ -1,0 +1,30 @@
+From 3e90347aabd17a46afb1a2664c176c66f137b2e3 Mon Sep 17 00:00:00 2001
+From: genie1997 <genie1997.dev@gmail.com>
+Date: Mon, 2 Nov 2026 16:44:31 +0530
+Subject: [PATCH] redwood: Cap normal photo width at 4608
+
+Keep the 108 MP size in Ultra HD.
+---
+ smali_classes7/com/mi/device/Redwood.smali | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/smali_classes7/com/mi/device/Redwood.smali b/smali_classes7/com/mi/device/Redwood.smali
+index 2fe4a05b..2dccd291 100644
+--- a/smali_classes7/com/mi/device/Redwood.smali
++++ b/smali_classes7/com/mi/device/Redwood.smali
+@@ -2087,3 +2087,12 @@
+ 
+     return p0
+ .end method
++
++# widest normal photo size: front QCFA fits, 108 MP stays in Ultra HD
++.method public I1()I
++    .locals 1
++
++    const/16 v0, 0x1200
++
++    return v0
++.end method
+-- 
+2.53.0
+
