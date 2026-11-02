@@ -1,0 +1,29 @@
+From 2fcdd9955eea676c961343940ed0357771d082ee Mon Sep 17 00:00:00 2001
+From: genie1997 <genie1997.dev@gmail.com>
+Date: Mon, 2 Nov 2026 15:47:12 +0530
+Subject: [PATCH] Skip oversized sizes when picking the binning size
+
+Skip sizes above the limit on every device, not only one, so Ultra HD
+gets a binning size the HAL supports.
+---
+ smali/A/z3.smali | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/smali/A/z3.smali b/smali/A/z3.smali
+index 87656aba..7b016f78 100644
+--- a/smali/A/z3.smali
++++ b/smali/A/z3.smali
+@@ -167,9 +167,7 @@
+ 
+     iget-object v5, v5, LG7/b;->e:L릯릣릡맢릡릥맢릨릩릺릥릯릩맢릯릣릡릡릣릢맢릏릣릡릡릣릢;
+ 
+-    invoke-virtual {v5}, L릯릣릡맢릡릥맢릨릩릺릥릯릩맢릯릣릡릡릣릢맢릏릣릡릡릣릢;->T1()Z
+-
+-    move-result v5
++    const/4 v5, 0x1
+ 
+     const-wide/16 v6, 0x0
+ 
+-- 
+2.53.0
+
