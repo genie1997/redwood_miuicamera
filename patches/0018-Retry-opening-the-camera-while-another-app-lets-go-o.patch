@@ -1,0 +1,230 @@
+From dd9ec6adb311fafff87ac7d746746dac299fa94c Mon Sep 17 00:00:00 2001
+From: genie1997 <genie1997.dev@gmail.com>
+Date: Tue, 3 Nov 2026 14:38:16 +0530
+Subject: [PATCH] Retry opening the camera while another app lets go of it
+
+Retry the open for a short while instead of showing the error screen
+when the HAL is still busy, for example right after Google Lens.
+---
+ smali_classes4/na/d.smali                     |   2 +
+ smali_classes4/na/e.smali                     |  12 ++
+ smali_classes4/oa/e.smali                     |  13 ++
+ .../com/mi/device/RedwoodOpen.smali           | 139 ++++++++++++++++++
+ 4 files changed, 166 insertions(+)
+ create mode 100644 smali_classes7/com/mi/device/RedwoodOpen.smali
+
+diff --git a/smali_classes4/na/d.smali b/smali_classes4/na/d.smali
+index a1e267e3..cee69781 100644
+--- a/smali_classes4/na/d.smali
++++ b/smali_classes4/na/d.smali
+@@ -102,6 +102,8 @@
+         }
+     .end annotation
+ 
++    invoke-static {}, Lcom/mi/device/RedwoodOpen;->d()V
++
+     invoke-static {}, Lna/d;->d()Lna/d;
+ 
+     move-result-object v0
+diff --git a/smali_classes4/na/e.smali b/smali_classes4/na/e.smali
+index 0f87983e..94fa67d9 100644
+--- a/smali_classes4/na/e.smali
++++ b/smali_classes4/na/e.smali
+@@ -298,6 +298,16 @@
+         .end annotation
+     .end param
+ 
++    invoke-static {p2}, Lcom/mi/device/RedwoodOpen;->b(I)Z
++
++    move-result v0
++
++    if-eqz v0, :cond_redwood
++
++    return-void
++
++    :cond_redwood
++
+     invoke-virtual {p1}, Landroid/hardware/camera2/CameraDevice;->getId()Ljava/lang/String;
+ 
+     move-result-object v0
+@@ -415,6 +425,8 @@
+         .end annotation
+     .end param
+ 
++    invoke-static {}, Lcom/mi/device/RedwoodOpen;->c()V
++
+     invoke-virtual {p1}, Landroid/hardware/camera2/CameraDevice;->getId()Ljava/lang/String;
+ 
+     move-result-object v0
+diff --git a/smali_classes4/oa/e.smali b/smali_classes4/oa/e.smali
+index bf28949c..10a9546e 100644
+--- a/smali_classes4/oa/e.smali
++++ b/smali_classes4/oa/e.smali
+@@ -829,6 +829,19 @@
+     return-object p0
+ 
+     :goto_8
++    invoke-static {v0, p0}, Lcom/mi/device/RedwoodOpen;->a(Landroid/hardware/camera2/CameraAccessException;Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-eqz v1, :cond_d
++
++    invoke-static {}, Loa/b;->a()Loa/b;
++
++    move-result-object p0
++
++    return-object p0
++
++    :cond_d
+     iget-object v1, p0, Loa/c;->a:Ljava/lang/String;
+ 
+     new-instance v3, Ljava/lang/StringBuilder;
+diff --git a/smali_classes7/com/mi/device/RedwoodOpen.smali b/smali_classes7/com/mi/device/RedwoodOpen.smali
+new file mode 100644
+index 00000000..db7f0120
+--- /dev/null
++++ b/smali_classes7/com/mi/device/RedwoodOpen.smali
+@@ -0,0 +1,139 @@
++.class public final Lcom/mi/device/RedwoodOpen;
++.super Ljava/lang/Object;
++
++
++# static fields
++.field private static sPending:Ljava/lang/Object;
++
++.field private static sSkip:I
++
++.field private static sTries:I
++
++
++# direct methods
++.method public constructor <init>()V
++    .locals 0
++
++    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
++
++    return-void
++.end method
++
++# camera still held by the app that is closing: open again in 200 ms, up to 3 s
++.method public static declared-synchronized a(Landroid/hardware/camera2/CameraAccessException;Ljava/lang/Object;)Z
++    .locals 5
++
++    invoke-virtual {p0}, Landroid/hardware/camera2/CameraAccessException;->getReason()I
++
++    move-result v0
++
++    const/4 v1, 0x4
++
++    const/4 v2, 0x0
++
++    if-ne v0, v1, :cond_0
++
++    sget v0, Lcom/mi/device/RedwoodOpen;->sTries:I
++
++    const/16 v1, 0xf
++
++    if-ge v0, v1, :cond_0
++
++    add-int/lit8 v0, v0, 0x1
++
++    sput v0, Lcom/mi/device/RedwoodOpen;->sTries:I
++
++    sget v0, Lcom/mi/device/RedwoodOpen;->sSkip:I
++
++    add-int/lit8 v0, v0, 0x1
++
++    sput v0, Lcom/mi/device/RedwoodOpen;->sSkip:I
++
++    sput-object p1, Lcom/mi/device/RedwoodOpen;->sPending:Ljava/lang/Object;
++
++    invoke-static {}, Lna/d;->d()Lna/d;
++
++    move-result-object v0
++
++    iget-object v0, v0, Lna/d;->a:Landroid/os/Handler;
++
++    const/4 v1, 0x1
++
++    invoke-virtual {v0, v1, p1}, Landroid/os/Handler;->obtainMessage(ILjava/lang/Object;)Landroid/os/Message;
++
++    move-result-object v2
++
++    const-wide/16 v3, 0xc8
++
++    invoke-virtual {v0, v2, v3, v4}, Landroid/os/Handler;->sendMessageDelayed(Landroid/os/Message;J)Z
++
++    return v1
++
++    :cond_0
++    sput v2, Lcom/mi/device/RedwoodOpen;->sTries:I
++
++    return v2
++.end method
++
++.method public static declared-synchronized b(I)Z
++    .locals 2
++
++    const/4 v0, 0x1
++
++    if-ne p0, v0, :cond_0
++
++    sget v1, Lcom/mi/device/RedwoodOpen;->sSkip:I
++
++    if-lez v1, :cond_0
++
++    add-int/lit8 v1, v1, -0x1
++
++    sput v1, Lcom/mi/device/RedwoodOpen;->sSkip:I
++
++    return v0
++
++    :cond_0
++    const/4 v0, 0x0
++
++    return v0
++.end method
++
++.method public static declared-synchronized c()V
++    .locals 1
++
++    const/4 v0, 0x0
++
++    sput v0, Lcom/mi/device/RedwoodOpen;->sTries:I
++
++    const/4 v0, 0x0
++
++    sput-object v0, Lcom/mi/device/RedwoodOpen;->sPending:Ljava/lang/Object;
++
++    return-void
++.end method
++
++# a new open or close request replaces the waiting retry
++.method public static declared-synchronized d()V
++    .locals 3
++
++    sget-object v0, Lcom/mi/device/RedwoodOpen;->sPending:Ljava/lang/Object;
++
++    if-eqz v0, :cond_0
++
++    invoke-static {}, Lna/d;->d()Lna/d;
++
++    move-result-object v1
++
++    iget-object v1, v1, Lna/d;->a:Landroid/os/Handler;
++
++    const/4 v2, 0x1
++
++    invoke-virtual {v1, v2, v0}, Landroid/os/Handler;->removeMessages(ILjava/lang/Object;)V
++
++    const/4 v0, 0x0
++
++    sput-object v0, Lcom/mi/device/RedwoodOpen;->sPending:Ljava/lang/Object;
++
++    :cond_0
++    return-void
++.end method
+-- 
+2.53.0
+
