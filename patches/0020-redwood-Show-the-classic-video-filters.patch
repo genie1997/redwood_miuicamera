@@ -1,0 +1,45 @@
+From 52d31796acbecaddce91a2ba30820701297cb7e4 Mon Sep 17 00:00:00 2001
+From: genie1997 <genie1997.dev@gmail.com>
+Date: Thu, 5 Nov 2026 23:47:18 +0530
+Subject: [PATCH] redwood: Show the classic video filters
+
+The redwood HAL only renders the classic filter ids, so cloud and newer
+video filters left the picture unchanged.
+---
+ smali/f0/W.smali | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/smali/f0/W.smali b/smali/f0/W.smali
+index b57788a3..544aa690 100644
+--- a/smali/f0/W.smali
++++ b/smali/f0/W.smali
+@@ -83,7 +83,7 @@
+     goto :goto_0
+ 
+     :cond_2
+-    const/16 p0, 0xc
++    const/16 p0, 0x7
+ 
+     invoke-static {p0}, Lf0/W;->k(I)Ljava/util/ArrayList;
+ 
+@@ -93,7 +93,7 @@
+ 
+     :cond_3
+     :goto_0
+-    const/16 p0, 0x9
++    const/16 p0, 0x7
+ 
+     invoke-static {p0}, Lf0/W;->k(I)Ljava/util/ArrayList;
+ 
+@@ -548,8 +548,6 @@
+ 
+     check-cast p2, Ljava/util/List;
+ 
+-    if-nez p2, :cond_2
+-
+     invoke-virtual {p0, p1}, Lf0/W;->isSupportMode(I)Z
+ 
+     move-result p2
+-- 
+2.53.0
+
